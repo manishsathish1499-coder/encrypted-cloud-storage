@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Login - Encrypted Cloud Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            width: 320px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1976D2;
+        }
+
+        .link {
+            margin-top: 15px;
+            display: block;
+        }
+    </style>
+</head>
 <body>
-<h2>Login</h2>
-<form method="POST">
-    <input type="text" name="username" placeholder="Enter Username" required>
-    <button type="submit">Login</button>
-</form>
-<a href="/register">Register</a>
+
+<div class="container">
+    <h2>🔐 Login</h2>
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <a class="link" href="/register">Don't have an account? Register</a>
+</div>
+
 </body>
 </html>
