@@ -1,39 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Encrypted Cloud Storage</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f4f4;
-            padding: 40px;
-        }
+<title>Encrypted Cloud Storage</title>
 
-        .container {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+}
 
-        button {
-            padding: 6px 12px;
-            margin-left: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.container {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-        .encrypt { background: #4CAF50; color: white; }
-        .decrypt { background: #2196F3; color: white; }
-        .download { background: #ff9800; color: white; }
-        .delete { background: #f44336; color: white; }
-    </style>
+.alert {
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.alert.error {
+    background-color: #ffe5e5;
+    color: #cc0000;
+}
+
+.alert.success {
+    background-color: #e6ffe6;
+    color: #006600;
+}
+
+button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.decrypt { background-color: #3498db; color: white; }
+.download { background-color: #f39c12; color: white; }
+.delete { background-color: #e74c3c; color: white; }
+</style>
+
 </head>
 <body>
 
 <h1>🔐 Encrypted Cloud Storage</h1>
 <p>Welcome <strong>{{ user }}</strong> | <a href="/logout">Logout</a></p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 <div class="container">
     <h3>Dashboard</h3>
@@ -46,7 +72,7 @@
     <h3>Upload File</h3>
     <form action="/upload" method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
-        <button class="encrypt">Encrypt & Upload</button>
+        <button>Encrypt & Upload</button>
     </form>
 </div>
 
@@ -58,18 +84,6 @@
             <p>
                 <strong>{{ file.name }}</strong>
                 ({{ file.size }} KB | {{ file.time }})
-
-                <a href="/decrypt/{{ file.name }}">
-                    <button class="decrypt">Decrypt</button>
-                </a>
-
-                <a href="/download/{{ file.name }}">
-                    <button class="download">Download</button>
-                </a>
-
-                <a href="/delete/{{ file.name }}">
-                    <button class="delete">Delete</button>
-                </a>
             </p>
         {% endfor %}
     {% else %}
