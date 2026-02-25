@@ -3,24 +3,79 @@
 <head>
 <title>Encrypted Cloud Storage</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f7fa;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 22px;
 }
 
 .container {
     background: white;
-    padding: 20px;
-    margin: 20px 0;
+    padding: 15px;
+    margin: 15px 0;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.dashboard p {
+    margin: 6px 0;
+}
+
+button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.upload-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+.file-row {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.file-name {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.file-meta {
+    font-size: 13px;
+    color: gray;
+    margin-bottom: 8px;
+}
+
+.decrypt { background-color: #3498db; color: white; }
+.download { background-color: #f39c12; color: white; }
+.delete { background-color: #e74c3c; color: white; }
+
+.actions a {
+    text-decoration: none;
+}
+
+.actions button {
+    margin-right: 5px;
 }
 
 .alert {
     padding: 10px;
     border-radius: 6px;
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
 .alert.error {
@@ -33,18 +88,12 @@ body {
     color: #006600;
 }
 
-button {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+@media (min-width: 768px) {
+    body {
+        padding: 40px;
+    }
 }
-
-.decrypt { background-color: #3498db; color: white; }
-.download { background-color: #f39c12; color: white; }
-.delete { background-color: #e74c3c; color: white; }
 </style>
-
 </head>
 <body>
 
@@ -61,7 +110,7 @@ button {
   {% endif %}
 {% endwith %}
 
-<div class="container">
+<div class="container dashboard">
     <h3>Dashboard</h3>
     <p><strong>Total Files:</strong> {{ total_files }}</p>
     <p><strong>Total Storage Used:</strong> {{ total_size }} MB</p>
@@ -71,8 +120,8 @@ button {
 <div class="container">
     <h3>Upload File</h3>
     <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button>Encrypt & Upload</button>
+        <input type="file" name="file"><br>
+        <button class="upload-btn">Encrypt & Upload</button>
     </form>
 </div>
 
@@ -81,10 +130,26 @@ button {
 
     {% if files %}
         {% for file in files %}
-            <p>
-                <strong>{{ file.name }}</strong>
-                ({{ file.size }} KB | {{ file.time }})
-            </p>
+        <div class="file-row">
+            <span class="file-name">{{ file.name }}</span>
+            <span class="file-meta">
+                {{ file.size }} KB | {{ file.time }}
+            </span>
+
+            <div class="actions">
+                <a href="/decrypt/{{ file.name }}">
+                    <button class="decrypt">Decrypt</button>
+                </a>
+
+                <a href="/download/{{ file.name }}">
+                    <button class="download">Download</button>
+                </a>
+
+                <a href="/delete/{{ file.name }}">
+                    <button class="delete">Delete</button>
+                </a>
+            </div>
+        </div>
         {% endfor %}
     {% else %}
         <p>No encrypted files yet.</p>
